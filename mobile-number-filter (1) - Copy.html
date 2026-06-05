@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Numerology Numbers — Mobile Number Filter & Finder</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
+<style>
+/* ═══════════════════════════════════════════════
+   LIGHT MODE (default)
+═══════════════════════════════════════════════ */
+:root {
+  --bg:       #f4f1ff;
+  --bg2:      #ede9ff;
+  --surface:  #ffffff;
+  --surface2: #f9f7ff;
+  --surface3: #f0ecff;
+  --border:   #e2daf7;
+  --border2:  #cec3f5;
+
+  --g1: #7c3aed;
+  --g2: #a855f7;
+  --g3: #ec4899;
+  --g4: #f97316;
+  --g5: #06b6d4;
+  --g6: #10b981;
+
+  --grad-main:    linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #ec4899 100%);
+  --grad-gold:    linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  --grad-teal:    linear-gradient(135deg, #06b6d4 0%, #10b981 100%);
+  --grad-cool:    linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  --grad-warm:    linear-gradient(135deg, #f43f5e 0%, #f97316 100%);
+  --grad-card:    linear-gradient(145deg, #ffffff 0%, #f9f7ff 100%);
+  --grad-header:  linear-gradient(135deg, #4c1d95 0%, #7c3aed 40%, #a855f7 70%, #ec4899 100%);
+
+  --text:   #1e1b4b;
+  --text2:  #4c4580;
+  --text3:  #9490b8;
+  --text4:  #c4c0db;
+
+  --success: #10b981;
+  --error:   #f43f5e;
+  --warn:    #f59e0b;
+  --info:    #6366f1;
+
+  --shadow-sm:  0 2px 8px rgba(124,58,237,0.08);
+  --shadow-md:  0 8px 32px rgba(124,58,237,0.12);
+  --shadow-lg:  0 20px 60px rgba(124,58,237,0.18);
+  --shadow-glow: 0 0 30px rgba(168,85,247,0.25);
+
+  --radius:    16px;
+  --radius-sm: 10px;
+  --radius-xs: 6px;
+  --serif:   'Cinzel', serif;
+  --sans:    'Plus Jakarta Sans', sans-serif;
+  --mono:    'JetBrains Mono', monospace;
+}
+
+/* ═══════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════ */
+[data-theme="dark"] {
+  --bg:       #0c0a1a;
+  --bg2:      #110e24;
+  --surface:  #16122e;
+  --surface2: #1e1940;
+  --surface3: #252050;
+  --border:   #2e2860;
+  --border2:  #3d3578;
+
+  --grad-card:   linear-gradient(145deg, #16122e 0%, #1e1940 100%);
+  --grad-header: linear-gradient(135deg, #1e0070 0%, #4c1d95 40%, #7c3aed 70%, #a855f7 100%);
+
+  --text:   #ede9ff;
+  --text2:  #b8b0e0;
+  --text3:  #7a72a8;
+  --text4:  #3e3868;
+
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md:  0 8px 32px rgba(0,0,0,0.5);
+  --shadow-lg:  0 20px 60px rgba(0,0,0,0.6);
+  --shadow-glow: 0 0 40px rgba(168,85,247,0.3);
+}
+
+/* ═══════════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  transition:background .4s,color .4s;
+  line-height:1.6;
+}
+body::before{
+  content:'';
+  position:fixed;
+  inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(124,58,237,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(236,72,153,0.06) 0%, transparent 50%);
+  pointer-events:none;
+  z-index:0;
+}
+.app-wrapper{max-width:1280px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1}
+
+/* ═══════════════════════════════════════════════
+   HEADER HERO
+═══════════════════════════════════════════════ */
+.site-header{
+  background:var(--grad-header);
+  margin:0 -20px 32px;
+  padding:32px 40px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.site-header::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 10% 50%, rgba(255,255,255,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 20%, rgba(255,255,255,0.05) 0%, transparent 35%);
+}
+.site-header::after{
+  content:'';
+  position:absolute;
+  bottom:-2px; left:0; right:0;
+  height:40px;
+  background:var(--bg);
+  clip-path:ellipse(55% 100% at 50% 100%);
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;flex-wrap:wrap;gap:16px}
+.brand{display:flex;align-items:center;gap:16px}
+.brand-emblem{
+  width:56px;height:56px;
+  background:linear-gradient(135deg,rgba(255,255,255,0.25),rgba(255,255,255,0.1));
+  border:1.5px solid rgba(255,255,255,0.3);
+  border-radius:14px;
+  display:grid;place-items:center;
+  backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
+}
+.brand-emblem svg{width:28px;height:28px}
+.brand-copy{}
+.brand-title{
+  font-family:var(--serif);
+  font-size:26px;
+  font-weight:700;
+  color:#fff;
+  letter-spacing:1px;
+  line-height:1.1;
+  text-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.brand-subtitle{
+  font-size:12px;
+  color:rgba(255,255,255,0.7);
+  letter-spacing:2.5px;
+  text-transform:uppercase;
+  margin-top:3px;
+  font-weight:400;
+}
+.header-right{display:flex;align-items:center;gap:10px}
+.theme-btn{
+  background:rgba(255,255,255,0.15);
+  border:1.5px solid rgba(255,255,255,0.25);
+  color:#fff;
+  border-radius:40px;
+  padding:8px 18px;
+  cursor:pointer;
+  font-family:var(--sans);
+  font-size:13px;
+  font-weight:600;
+  transition:all .25s;
+  display:flex;align-items:center;gap:7px;
+  backdrop-filter:blur(8px);
+  letter-spacing:0.3px;
+}
+.theme-btn:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}
+
+/* ═══════════════════════════════════════════════
+   STATS ROW
+═══════════════════════════════════════════════ */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+@media(max-width:640px){.stats-row{grid-template-columns:repeat(2,1fr)}}
+.stat-pill{
+  background:var(--grad-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:18px 16px;
+  text-align:center;
+  box-shadow:var(--shadow-sm);
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s, box-shadow .2s;
+}
+.stat-pill:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.stat-pill::before{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;height:3px;
+  border-radius:3px 3px 0 0;
+}
+.stat-pill.s1::before{background:var(--grad-cool)}
+.stat-pill.s2::before{background:var(--grad-teal)}
+.stat-pill.s3::before{background:var(--grad-warm)}
+.stat-pill.s4::before{background:var(--grad-main)}
+.stat-num{
+  font-family:var(--mono);
+  font-size:28px;
+  font-weight:700;
+  line-height:1;
+  background:var(--grad-main);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.stat-pill.s1 .stat-num{background:var(--grad-cool);-webkit-background-clip:text;background-clip:text}
+.stat-pill.s2 .stat-num{background:var(--grad-teal);-webkit-background-clip:text;background-clip:text}
+.stat-pill.s3 .stat-num{background:var(--grad-warm);-webkit-background-clip:text;background-clip:text}
+.stat-pill.s4 .stat-num{background:var(--grad-main);-webkit-background-clip:text;background-clip:text}
+.stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:5px;font-weight:600}
+
+/* ═══════════════════════════════════════════════
+   MAIN GRID
+═══════════════════════════════════════════════ */
+.main-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+@media(max-width:960px){.main-grid{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════════════════
+   CARDS
+═══════════════════════════════════════════════ */
+.card{
+  background:var(--grad-card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:26px;
+  box-shadow:var(--shadow-sm);
+  transition:box-shadow .3s;
+}
+.card+.card{margin-top:18px}
+.card:hover{box-shadow:var(--shadow-md)}
+
+.section-label{
+  display:flex;align-items:center;gap:10px;
+  margin-bottom:18px;
+}
+.section-num{
+  width:28px;height:28px;
+  background:var(--grad-main);
+  border-radius:8px;
+  display:grid;place-items:center;
+  font-family:var(--mono);font-size:12px;font-weight:700;color:#fff;
+  flex-shrink:0;
+  box-shadow:0 4px 12px rgba(124,58,237,0.3);
+}
+.section-title{
+  font-family:var(--serif);
+  font-size:15px;
+  font-weight:600;
+  color:var(--text);
+  letter-spacing:0.5px;
+}
+.section-sub{font-size:11px;color:var(--text3);margin-left:auto;font-weight:500;letter-spacing:0.5px}
+
+/* ═══════════════════════════════════════════════
+   TABS
+═══════════════════════════════════════════════ */
+.tab-bar{
+  display:flex;
+  background:var(--surface3);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  padding:4px;
+  margin-bottom:18px;
+  gap:4px;
+}
+.tab-btn{
+  flex:1;padding:9px 16px;border:none;
+  background:transparent;color:var(--text3);
+  border-radius:7px;cursor:pointer;
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  transition:all .2s;letter-spacing:0.2px;
+}
+.tab-btn.active{
+  background:var(--grad-main);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(124,58,237,0.35);
+}
+
+/* ═══════════════════════════════════════════════
+   TEXTAREA
+═══════════════════════════════════════════════ */
+textarea{
+  width:100%;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text);
+  font-family:var(--mono);font-size:13px;
+  padding:14px 16px;
+  resize:vertical;min-height:200px;
+  outline:none;transition:border .2s, box-shadow .2s;
+  line-height:1.9;
+}
+textarea:focus{border-color:var(--g2);box-shadow:0 0 0 3px rgba(168,85,247,0.1)}
+textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
+
+/* ═══════════════════════════════════════════════
+   UPLOAD ZONE
+═══════════════════════════════════════════════ */
+.upload-zone{
+  border:2px dashed var(--border2);
+  border-radius:var(--radius-sm);
+  padding:36px 24px;
+  text-align:center;
+  cursor:pointer;
+  transition:all .25s;
+  position:relative;
+  background:var(--surface2);
+}
+.upload-zone:hover,.upload-zone.drag{
+  border-color:var(--g2);
+  background:rgba(168,85,247,0.04);
+  box-shadow:0 0 0 3px rgba(168,85,247,0.08);
+}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-icon{font-size:36px;margin-bottom:10px;display:block}
+.upload-text{font-size:14px;color:var(--text2);font-weight:500}
+.upload-text strong{
+  background:var(--grad-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-weight:700;
+}
+.upload-sub{font-size:12px;color:var(--text3);margin-top:5px}
+.file-info{margin-top:12px;padding:10px 14px;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.15);border-radius:var(--radius-xs);font-size:12px;font-family:var(--mono);color:var(--text2);display:none}
+.file-info.show{display:block}
+.progress-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:10px;display:none}
+.progress-bar.show{display:block}
+.progress-fill{height:100%;background:var(--grad-main);width:0%;transition:width .3s;border-radius:2px}
+
+/* ═══════════════════════════════════════════════
+   OPTIONS TOGGLE
+═══════════════════════════════════════════════ */
+.options-row{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
+.toggle-wrap{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer;user-select:none;font-weight:500}
+.toggle{width:40px;height:22px;background:var(--border2);border-radius:11px;position:relative;transition:background .25s;flex-shrink:0}
+.toggle.on{background:linear-gradient(135deg,var(--g1),var(--g2))}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .25s;box-shadow:0 2px 4px rgba(0,0,0,0.2)}
+.toggle.on::after{left:21px}
+
+/* ═══════════════════════════════════════════════
+   FILTER PANEL
+═══════════════════════════════════════════════ */
+.filter-section{margin-bottom:16px}
+.filter-label{
+  font-size:11px;font-weight:700;
+  color:var(--text2);
+  text-transform:uppercase;letter-spacing:1.5px;
+  margin-bottom:9px;
+  display:flex;align-items:center;gap:7px;
+}
+.filter-tag{
+  padding:2px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:600;
+  letter-spacing:0.5px;
+}
+.filter-tag.exclude{background:rgba(244,63,94,0.1);color:#f43f5e;border:1px solid rgba(244,63,94,0.2)}
+.filter-tag.include{background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2)}
+
+/* ═══════════════════════════════════════════════
+   DIGIT BUTTONS
+═══════════════════════════════════════════════ */
+.digit-btns{display:flex;flex-wrap:wrap;gap:6px}
+.digit-btn{
+  width:38px;height:38px;
+  border:1.5px solid var(--border2);
+  background:var(--surface2);
+  color:var(--text2);
+  border-radius:var(--radius-xs);
+  cursor:pointer;
+  font-family:var(--mono);font-size:15px;font-weight:700;
+  transition:all .15s;
+  display:grid;place-items:center;
+  position:relative;
+}
+.digit-btn:hover{
+  border-color:var(--g2);color:var(--g2);
+  background:rgba(168,85,247,0.06);
+  transform:translateY(-1px);
+}
+.digit-btn.selected{
+  background:var(--grad-main);
+  border-color:transparent;
+  color:#fff;
+  box-shadow:0 4px 14px rgba(124,58,237,0.35);
+  transform:translateY(-1px);
+}
+.digit-btn.clear-btn{
+  width:auto;padding:0 13px;
+  color:var(--text3);font-family:var(--sans);font-size:12px;font-weight:600;
+  letter-spacing:0.3px;
+}
+.digit-btn.clear-btn:hover{color:var(--error);border-color:var(--error);background:rgba(244,63,94,0.05)}
+
+/* ═══════════════════════════════════════════════
+   RADIO OPTIONS
+═══════════════════════════════════════════════ */
+.radio-group{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
+.radio-opt{
+  display:flex;align-items:center;gap:6px;
+  padding:7px 14px;
+  border:1.5px solid var(--border);
+  border-radius:20px;
+  cursor:pointer;font-size:13px;color:var(--text3);
+  transition:all .15s;white-space:nowrap;font-weight:500;
+}
+.radio-opt input{display:none}
+.radio-opt.active{
+  border-color:var(--g2);
+  background:rgba(168,85,247,0.08);
+  color:var(--g1);
+}
+.radio-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:background .15s;flex-shrink:0}
+.radio-opt.active .radio-dot{background:var(--g2)}
+
+/* ═══════════════════════════════════════════════
+   TEXT INPUTS
+═══════════════════════════════════════════════ */
+.text-input{
+  width:100%;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text);
+  font-family:var(--mono);font-size:14px;
+  padding:10px 14px;
+  outline:none;transition:border .2s, box-shadow .2s;
+}
+.text-input:focus{border-color:var(--g2);box-shadow:0 0 0 3px rgba(168,85,247,0.1)}
+.text-input::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px;font-weight:400}
+.input-hint{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.4}
+
+/* ═══════════════════════════════════════════════
+   DIVIDER
+═══════════════════════════════════════════════ */
+.filter-divider{
+  height:1px;
+  background:linear-gradient(90deg, transparent, var(--border2) 30%, var(--border2) 70%, transparent);
+  margin:15px 0;
+}
+
+/* ═══════════════════════════════════════════════
+   SEARCH BUTTON
+═══════════════════════════════════════════════ */
+.search-btn{
+  width:100%;padding:15px;
+  background:var(--grad-main);
+  border:none;
+  border-radius:var(--radius-sm);
+  color:#fff;
+  font-family:var(--serif);font-size:15px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;
+  cursor:pointer;
+  transition:all .25s;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  margin-top:18px;
+  box-shadow:0 8px 24px rgba(124,58,237,0.35);
+  position:relative;overflow:hidden;
+}
+.search-btn::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15),transparent);
+  opacity:0;transition:opacity .2s;
+}
+.search-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(124,58,237,0.45)}
+.search-btn:hover::before{opacity:1}
+.search-btn:active{transform:translateY(0)}
+.search-btn.loading{background:var(--surface3);color:var(--text3);cursor:not-allowed;box-shadow:none}
+
+/* ═══════════════════════════════════════════════
+   RESULT SECTION
+═══════════════════════════════════════════════ */
+.result-area{
+  width:100%;
+  background:var(--surface2);
+  border:1.5px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--text);
+  font-family:var(--mono);font-size:13px;
+  padding:14px 16px;
+  resize:vertical;min-height:280px;
+  outline:none;line-height:2;
+}
+.result-actions{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+.action-btn{
+  flex:1;min-width:110px;
+  padding:11px 16px;
+  border:1.5px solid var(--border);
+  background:var(--surface2);
+  color:var(--text2);
+  border-radius:var(--radius-sm);
+  cursor:pointer;
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  letter-spacing:0.2px;
+}
+.action-btn.copy-btn:hover{border-color:var(--g4);color:var(--g4);background:rgba(249,115,22,0.05)}
+.action-btn.txt-btn:hover{border-color:var(--g5);color:var(--g5);background:rgba(6,182,212,0.05)}
+.action-btn.excel-btn:hover{border-color:var(--g6);color:var(--g6);background:rgba(16,185,129,0.05)}
+.action-btn.clear-res-btn:hover{border-color:var(--error);color:var(--error);background:rgba(244,63,94,0.05)}
+
+/* ═══════════════════════════════════════════════
+   ACTIVE FILTER BADGES
+═══════════════════════════════════════════════ */
+.active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:24px}
+.filter-badge{
+  padding:4px 11px;
+  background:rgba(124,58,237,0.08);
+  border:1px solid rgba(124,58,237,0.2);
+  border-radius:20px;
+  font-size:11px;color:var(--g1);
+  font-family:var(--mono);font-weight:500;
+}
+
+/* ═══════════════════════════════════════════════
+   MULTI DIGIT WRAP
+═══════════════════════════════════════════════ */
+#multiDigitWrap{display:none}
+#singleDigitWrap.hide{display:none}
+
+/* ═══════════════════════════════════════════════
+   TOAST
+═══════════════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:28px;right:28px;
+  padding:13px 22px;
+  border-radius:var(--radius-sm);
+  font-family:var(--sans);font-size:13px;font-weight:600;
+  z-index:9999;
+  transform:translateY(80px);opacity:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow:var(--shadow-lg);
+  display:flex;align-items:center;gap:8px;
+  letter-spacing:0.2px;
+}
+#toast.show{transform:translateY(0);opacity:1}
+#toast.success{background:linear-gradient(135deg,#064e3b,#065f46);border:1px solid #10b981;color:#6ee7b7}
+#toast.error{background:linear-gradient(135deg,#4c0519,#881337);border:1px solid #f43f5e;color:#fda4af}
+#toast.warn{background:linear-gradient(135deg,#451a03,#78350f);border:1px solid #f59e0b;color:#fcd34d}
+#toast.info{background:linear-gradient(135deg,#1e1b4b,#312e81);border:1px solid #6366f1;color:#c7d2fe}
+
+/* ═══════════════════════════════════════════════
+   SPINNER
+═══════════════════════════════════════════════ */
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
+.spinner.show{display:inline-block}
+
+/* ═══════════════════════════════════════════════
+   FILTER PANEL HEADER GRADIENT STRIP
+═══════════════════════════════════════════════ */
+.filter-card-head{
+  margin:-26px -26px 20px;
+  padding:18px 26px;
+  background:linear-gradient(135deg,rgba(124,58,237,0.08),rgba(236,72,153,0.05));
+  border-bottom:1px solid var(--border);
+  border-radius:var(--radius) var(--radius) 0 0;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.filter-card-title{
+  font-family:var(--serif);
+  font-size:16px;font-weight:700;
+  background:var(--grad-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  letter-spacing:1px;
+}
+.filter-card-badge{
+  font-size:11px;color:var(--text3);font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+}
+
+/* ═══════════════════════════════════════════════
+   RESULT CARD HEAD
+═══════════════════════════════════════════════ */
+.result-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:10px;flex-wrap:wrap;gap:8px;
+}
+.result-title{
+  font-family:var(--serif);
+  font-size:16px;font-weight:700;
+  background:var(--grad-main);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.result-meta{font-size:11px;color:var(--text3);font-family:var(--mono);font-weight:500}
+
+/* ═══════════════════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════════════════ */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--g2)}
+
+/* ═══════════════════════════════════════════════
+   PASTE COUNT CHIP
+═══════════════════════════════════════════════ */
+.count-chip{
+  padding:4px 12px;
+  background:rgba(16,185,129,0.1);
+  border:1px solid rgba(16,185,129,0.25);
+  border-radius:20px;
+  font-size:12px;font-family:var(--mono);font-weight:500;
+  color:var(--g6);
+  display:none;
+}
+.count-chip.show{display:inline-flex;align-items:center;gap:5px}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+═══════════════════════════════════════════════ */
+@media(max-width:600px){
+  .site-header{padding:24px 20px 22px}
+  .brand-title{font-size:20px}
+  .result-actions{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="app-wrapper" style="padding-top:0;padding-bottom:0">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-emblem">
+          <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="11" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+            <path d="M9 14l3 3 7-7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="14" cy="6" r="1.5" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="14" cy="22" r="1.5" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="6" cy="14" r="1.5" fill="rgba(255,255,255,0.5)"/>
+            <circle cx="22" cy="14" r="1.5" fill="rgba(255,255,255,0.5)"/>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <div class="brand-title">Numerology Numbers</div>
+          <div class="brand-subtitle">Advanced Mobile Number Filter &amp; Finder</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <button class="theme-btn" onclick="toggleTheme()" id="themeBtn">🌙 Dark Mode</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="app-wrapper">
+
+  <!-- ══════════════════════════════════════════
+       STATS
+  ══════════════════════════════════════════ -->
+  <div class="stats-row">
+    <div class="stat-pill s1">
+      <div class="stat-num" id="statTotal">0</div>
+      <div class="stat-label">Uploaded</div>
+    </div>
+    <div class="stat-pill s2">
+      <div class="stat-num" id="statValid">0</div>
+      <div class="stat-label">Valid</div>
+    </div>
+    <div class="stat-pill s3">
+      <div class="stat-num" id="statInvalid">0</div>
+      <div class="stat-label">Invalid</div>
+    </div>
+    <div class="stat-pill s4">
+      <div class="stat-num" id="statMatched">0</div>
+      <div class="stat-label">Matched</div>
+    </div>
+  </div>
+
+  <div class="main-grid">
+
+    <!-- ══════════════════════════════════════
+         LEFT — INPUT + RESULT
+    ══════════════════════════════════════ -->
+    <div>
+
+      <!-- INPUT CARD -->
+      <div class="card">
+        <div class="section-label">
+          <div class="section-num">01</div>
+          <div class="section-title">Number Input</div>
+        </div>
+        <div class="tab-bar">
+          <button class="tab-btn active" onclick="switchTab('paste',this)">✎&nbsp; Paste Numbers</button>
+          <button class="tab-btn" onclick="switchTab('upload',this)">⬆&nbsp; Upload File</button>
+        </div>
+
+        <!-- PASTE -->
+        <div id="pastePanel">
+          <textarea id="pasteInput" placeholder="Paste mobile numbers here, one per line&#10;&#10;9876543210&#10;9123456789&#10;9988776655&#10;..." oninput="handlePasteInput()"></textarea>
+          <div class="options-row">
+            <label class="toggle-wrap" onclick="toggleOption('dedup')">
+              <div class="toggle on" id="toggleDedup"></div>
+              Remove Duplicates
+            </label>
+            <span class="count-chip" id="pasteCount">0 numbers</span>
+          </div>
+        </div>
+
+        <!-- UPLOAD -->
+        <div id="uploadPanel" style="display:none">
+          <div class="upload-zone" id="dropZone">
+            <input type="file" accept=".txt,.csv,.xlsx,.xls" onchange="handleFileUpload(this.files[0])" id="fileInput"/>
+            <span class="upload-icon">📂</span>
+            <div class="upload-text">Drop file here or <strong>click to browse</strong></div>
+            <div class="upload-sub">Supports TXT · CSV · XLSX &nbsp;|&nbsp; Up to 25,000 numbers</div>
+          </div>
+          <div class="file-info" id="fileInfo"></div>
+          <div class="progress-bar" id="uploadProgress"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="options-row" style="margin-top:12px">
+            <label class="toggle-wrap" onclick="toggleOption('dedup')">
+              <div class="toggle on" id="toggleDedup2"></div>
+              Remove Duplicates
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULT CARD -->
+      <div class="card">
+        <div class="result-head">
+          <div class="result-title">Results</div>
+          <div class="result-meta" id="resultMeta"></div>
+        </div>
+        <div class="active-filters" id="activeFiltersWrap"></div>
+        <div style="margin-top:12px">
+          <textarea class="result-area" id="resultArea" readonly placeholder="Results will appear here after clicking  ⚡ SEARCH / MATCH …"></textarea>
+        </div>
+        <div class="result-actions">
+          <button class="action-btn copy-btn" onclick="copyResults()">📋 Copy</button>
+          <button class="action-btn txt-btn" onclick="downloadTxt()">⬇ TXT</button>
+          <button class="action-btn excel-btn" onclick="downloadExcel()">📊 Excel</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════
+         RIGHT — FILTER PANEL
+    ══════════════════════════════════════ -->
+    <div>
+      <div class="card">
+        <div class="filter-card-head">
+          <div class="filter-card-title">Filter Panel</div>
+          <div class="filter-card-badge">AND Logic</div>
+        </div>
+
+        <!-- F1: WITHOUT -->
+        <div class="filter-section">
+          <div class="filter-label">Without Digit <span class="filter-tag exclude">Exclude</span></div>
+          <div class="digit-btns" id="withoutDigitBtns"></div>
+        </div>
+        <div class="filter-divider"></div>
+
+        <!-- F2: MUST HAVE -->
+        <div class="filter-section">
+          <div class="filter-label">Must Have Digit <span class="filter-tag include">Include</span></div>
+          <div class="radio-group">
+            <label class="radio-opt active" id="mustSingleOpt">
+              <input type="radio" name="mustMode" value="single" checked onchange="switchMustMode('single')"/>
+              <div class="radio-dot"></div> Single
+            </label>
+            <label class="radio-opt" id="mustMultiOpt">
+              <input type="radio" name="mustMode" value="multi" onchange="switchMustMode('multi')"/>
+              <div class="radio-dot"></div> Multiple
+            </label>
+          </div>
+          <div id="singleDigitWrap">
+            <div class="digit-btns" id="mustHaveBtns"></div>
+          </div>
+          <div id="multiDigitWrap">
+            <input type="text" class="text-input" id="multiDigitInput" maxlength="2" placeholder="Enter up to 2 digits e.g. 78" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
+            <div class="input-hint">Numbers containing ALL entered digits will match</div>
+          </div>
+        </div>
+        <div class="filter-divider"></div>
+
+        <!-- F3: DIGITAL ROOT -->
+        <div class="filter-section">
+          <div class="filter-label">Total Sum · Digital Root</div>
+          <div class="digit-btns" id="digitalRootBtns"></div>
+        </div>
+        <div class="filter-divider"></div>
+
+        <!-- F4: LAST DIGIT -->
+        <div class="filter-section">
+          <div class="filter-label">Last Digit Match <span class="filter-tag exclude" style="background:rgba(6,182,212,0.1);color:#06b6d4;border-color:rgba(6,182,212,0.2)">Ends With</span></div>
+          <input type="text" class="text-input" id="lastDigitInput" maxlength="5" placeholder="e.g. 123" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
+          <div class="input-hint">Return numbers ending with this sequence (max 5 digits)</div>
+        </div>
+        <div class="filter-divider"></div>
+
+        <!-- F5: MIDDLE -->
+        <div class="filter-section">
+          <div class="filter-label">Contains Sequence</div>
+          <input type="text" class="text-input" id="middleInput" maxlength="5" placeholder="e.g. 456" oninput="this.value=this.value.replace(/[^0-9]/g,'')"/>
+          <div class="input-hint">Match numbers containing this sequence anywhere (max 5 digits)</div>
+        </div>
+        <div class="filter-divider"></div>
+
+        <!-- F6: REPEAT -->
+        <div class="filter-section">
+          <div class="filter-label">Repeat Filter</div>
+          <div class="radio-group" style="flex-direction:column;gap:6px">
+            <label class="radio-opt" id="repeatAnyOpt">
+              <input type="radio" name="repeatMode" value="any" checked onchange="setRepeat('any')"/>
+              <div class="radio-dot"></div> Any (No Filter)
+            </label>
+            <label class="radio-opt" id="repeatYesOpt">
+              <input type="radio" name="repeatMode" value="yes" onchange="setRepeat('yes')"/>
+              <div class="radio-dot"></div> Repeat Required
+            </label>
+            <label class="radio-opt" id="repeatNoOpt">
+              <input type="radio" name="repeatMode" value="no" onchange="setRepeat('no')"/>
+              <div class="radio-dot"></div> All Digits Unique
+            </label>
+          </div>
+        </div>
+
+        <button class="action-btn" onclick="clearAllFilters()" style="width:100%;margin-bottom:2px">🗑&nbsp; Clear All Filters</button>
+
+        <button class="search-btn" onclick="runSearch()" id="searchBtn">
+          <span class="spinner" id="searchSpinner"></span>
+          <span id="searchBtnText">⚡ &nbsp;Search / Match</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+const state = {
+  numbers: [],
+  invalidCount: 0,
+  removeDuplicates: true,
+  activeTab: 'paste',
+  withoutDigits: new Set(),
+  mustHaveDigit: null,
+  mustMode: 'single',
+  digitalRoot: null,
+  repeatMode: 'any',
+};
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+function init() {
+  buildDigitBtns('withoutDigitBtns', toggleWithout, true);
+  buildDigitBtns('mustHaveBtns', toggleMustHave, true);
+  buildDigitBtns('digitalRootBtns', toggleDigitalRoot, true);
+  setupDropZone();
+}
+
+function buildDigitBtns(containerId, handler, withClear) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  for (let i = 0; i <= 9; i++) {
+    const b = document.createElement('button');
+    b.className = 'digit-btn';
+    b.textContent = i;
+    b.dataset.digit = i;
+    b.onclick = () => handler(i, b, containerId);
+    c.appendChild(b);
+  }
+  if (withClear) {
+    const clr = document.createElement('button');
+    clr.className = 'digit-btn clear-btn';
+    clr.textContent = '✕ Clear';
+    clr.onclick = () => clearDigitBtns(containerId, clearHandlerFor(containerId));
+    c.appendChild(clr);
+  }
+}
+
+function clearHandlerFor(id) {
+  if (id === 'withoutDigitBtns') return () => { state.withoutDigits.clear(); };
+  if (id === 'mustHaveBtns') return () => { state.mustHaveDigit = null; };
+  if (id === 'digitalRootBtns') return () => { state.digitalRoot = null; };
+}
+
+function clearDigitBtns(containerId, resetFn) {
+  document.querySelectorAll(`#${containerId} .digit-btn:not(.clear-btn)`).forEach(b => b.classList.remove('selected'));
+  if (resetFn) resetFn();
+}
+
+// Without = MULTI select
+function toggleWithout(digit, btn) {
+  if (state.withoutDigits.has(digit)) {
+    state.withoutDigits.delete(digit);
+    btn.classList.remove('selected');
+  } else {
+    state.withoutDigits.add(digit);
+    btn.classList.add('selected');
+  }
+}
+
+// Must Have = single select
+function toggleMustHave(digit, btn, containerId) {
+  const already = state.mustHaveDigit === digit;
+  clearDigitBtns(containerId, () => {});
+  state.mustHaveDigit = already ? null : digit;
+  if (!already) btn.classList.add('selected');
+}
+
+// Digital Root = single select
+function toggleDigitalRoot(digit, btn, containerId) {
+  const already = state.digitalRoot === digit;
+  clearDigitBtns(containerId, () => {});
+  state.digitalRoot = already ? null : digit;
+  if (!already) btn.classList.add('selected');
+}
+
+// ═══════════════════════════════════════════════════
+// THEME
+// ═══════════════════════════════════════════════════
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.dataset.theme === 'dark';
+  html.dataset.theme = isDark ? 'light' : 'dark';
+  document.getElementById('themeBtn').textContent = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
+}
+
+// ═══════════════════════════════════════════════════
+// TABS
+// ═══════════════════════════════════════════════════
+function switchTab(tab, btn) {
+  state.activeTab = tab;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pastePanel').style.display = tab === 'paste' ? '' : 'none';
+  document.getElementById('uploadPanel').style.display = tab === 'upload' ? '' : 'none';
+}
+
+// ═══════════════════════════════════════════════════
+// TOGGLE OPTIONS
+// ═══════════════════════════════════════════════════
+function toggleOption() {
+  state.removeDuplicates = !state.removeDuplicates;
+  const cls = state.removeDuplicates ? 'on' : '';
+  ['toggleDedup','toggleDedup2'].forEach(id => { const el = document.getElementById(id); if(el) el.className='toggle '+cls; });
+  if (state.activeTab === 'paste') handlePasteInput();
+}
+
+// ═══════════════════════════════════════════════════
+// PASTE
+// ═══════════════════════════════════════════════════
+let pasteDebounce = null;
+function handlePasteInput() {
+  clearTimeout(pasteDebounce);
+  pasteDebounce = setTimeout(() => {
+    const raw = document.getElementById('pasteInput').value;
+    parseNumbers(raw.split(/[\n,;]+/));
+  }, 300);
+}
+
+// ═══════════════════════════════════════════════════
+// FILE UPLOAD
+// ═══════════════════════════════════════════════════
+function setupDropZone() {
+  const dz = document.getElementById('dropZone');
+  ['dragenter','dragover'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.remove('drag'); }));
+  dz.addEventListener('drop', ev => { const f = ev.dataTransfer.files[0]; if(f) handleFileUpload(f); });
+}
+
+function handleFileUpload(file) {
+  if (!file) return;
+  const info = document.getElementById('fileInfo');
+  const progress = document.getElementById('uploadProgress');
+  const fill = document.getElementById('progressFill');
+  info.className = 'file-info show';
+  info.textContent = `Loading: ${file.name} (${(file.size/1024).toFixed(1)} KB)`;
+  progress.className = 'progress-bar show';
+  fill.style.width = '0%';
+  const ext = file.name.split('.').pop().toLowerCase();
+  if (ext === 'xlsx' || ext === 'xls') {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        fill.style.width = '50%';
+        const wb = XLSX.read(e.target.result, {type:'binary'});
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rows = XLSX.utils.sheet_to_json(ws, {header:1});
+        const lines = rows.flat().map(r => String(r||'').trim());
+        fill.style.width = '100%';
+        setTimeout(() => { progress.className='progress-bar'; }, 600);
+        parseNumbers(lines); updateFileInfo(file.name);
+      } catch(err) { showToast('Failed to read Excel file','error'); }
+    };
+    reader.readAsBinaryString(file);
+  } else {
+    const reader = new FileReader();
+    reader.onload = e => {
+      fill.style.width = '80%';
+      const lines = e.target.result.split(/[\n,;]+/);
+      fill.style.width = '100%';
+      setTimeout(() => { progress.className='progress-bar'; }, 600);
+      parseNumbers(lines); updateFileInfo(file.name);
+    };
+    reader.readAsText(file);
+  }
+}
+
+function updateFileInfo(name) {
+  const info = document.getElementById('fileInfo');
+  info.className = 'file-info show';
+  info.textContent = `✓ ${name}  |  Total: ${state.numbers.length + state.invalidCount}  |  Valid: ${state.numbers.length}  |  Invalid: ${state.invalidCount}`;
+}
+
+// ═══════════════════════════════════════════════════
+// PARSE NUMBERS
+// ═══════════════════════════════════════════════════
+function parseNumbers(lines) {
+  let valid = [], invalid = 0;
+  const seen = new Set();
+  for (let line of lines) {
+    let num = String(line||'').replace(/\s+/g,'').replace(/[^\d]/g,'');
+    if (!num) continue;
+    if (num.length !== 10 || !/^\d{10}$/.test(num)) { invalid++; continue; }
+    if (state.removeDuplicates) { if (seen.has(num)) continue; seen.add(num); }
+    valid.push(num);
+    if (valid.length >= 25000) break;
+  }
+  state.numbers = valid;
+  state.invalidCount = invalid;
+  updateStats(valid.length + invalid, valid.length, invalid, 0);
+  const chip = document.getElementById('pasteCount');
+  if (valid.length) { chip.textContent = `✓ ${valid.length.toLocaleString()} loaded`; chip.className='count-chip show'; }
+  else { chip.className='count-chip'; }
+  if (valid.length) showToast(`✓ ${valid.length.toLocaleString()} valid numbers loaded`, 'success');
+}
+
+// ═══════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════
+function updateStats(total, valid, invalid, matched) {
+  document.getElementById('statTotal').textContent = total.toLocaleString();
+  document.getElementById('statValid').textContent = valid.toLocaleString();
+  document.getElementById('statInvalid').textContent = invalid.toLocaleString();
+  document.getElementById('statMatched').textContent = matched.toLocaleString();
+}
+
+// ═══════════════════════════════════════════════════
+// FILTER CONTROLS
+// ═══════════════════════════════════════════════════
+function switchMustMode(mode) {
+  state.mustMode = mode;
+  document.getElementById('mustSingleOpt').classList.toggle('active', mode==='single');
+  document.getElementById('mustMultiOpt').classList.toggle('active', mode==='multi');
+  document.getElementById('singleDigitWrap').classList.toggle('hide', mode==='multi');
+  document.getElementById('multiDigitWrap').style.display = mode==='multi' ? 'block' : 'none';
+}
+
+function setRepeat(val) {
+  state.repeatMode = val;
+  ['repeatAnyOpt','repeatYesOpt','repeatNoOpt'].forEach(id => document.getElementById(id).classList.remove('active'));
+  document.getElementById(val==='any'?'repeatAnyOpt':val==='yes'?'repeatYesOpt':'repeatNoOpt').classList.add('active');
+}
+
+function clearAllFilters() {
+  state.withoutDigits.clear();
+  state.mustHaveDigit = null;
+  state.digitalRoot = null;
+  state.repeatMode = 'any';
+  document.querySelectorAll('.digit-btn.selected').forEach(b => b.classList.remove('selected'));
+  document.getElementById('lastDigitInput').value = '';
+  document.getElementById('middleInput').value = '';
+  document.getElementById('multiDigitInput').value = '';
+  switchMustMode('single');
+  setRepeat('any');
+  document.querySelectorAll('input[name="mustMode"]')[0].checked = true;
+  showToast('All filters cleared', 'info');
+}
+
+// ═══════════════════════════════════════════════════
+// DIGITAL ROOT
+// ═══════════════════════════════════════════════════
+function calcDigitalRoot(num) {
+  let n = 0;
+  for (let c of num) n += +c;
+  while (n >= 10) { let s=0; while(n>0){s+=n%10;n=Math.floor(n/10);} n=s; }
+  return n;
+}
+
+// ═══════════════════════════════════════════════════
+// SEARCH ENGINE
+// ═══════════════════════════════════════════════════
+function runSearch() {
+  if (state.numbers.length === 0) { showToast('No numbers loaded — paste or upload first', 'warn'); return; }
+  const btn = document.getElementById('searchBtn');
+  const spinner = document.getElementById('searchSpinner');
+  const btnText = document.getElementById('searchBtnText');
+  btn.classList.add('loading');
+  spinner.classList.add('show');
+  btnText.textContent = 'Processing…';
+
+  const without   = state.withoutDigits;
+  const mustSingle = state.mustMode === 'single' ? state.mustHaveDigit : null;
+  const mustMulti  = state.mustMode === 'multi' ? document.getElementById('multiDigitInput').value.replace(/[^0-9]/g,'') : '';
+  const drFilter   = state.digitalRoot;
+  const lastDig    = document.getElementById('lastDigitInput').value.trim();
+  const middle     = document.getElementById('middleInput').value.trim();
+  const repeat     = state.repeatMode;
+
+  setTimeout(() => {
+    const t0 = performance.now();
+    const nums = state.numbers;
+    const results = [];
+
+    for (let i = 0; i < nums.length; i++) {
+      const n = nums[i];
+      // F1 Without (multi)
+      if (without.size > 0) {
+        let bad = false;
+        for (const d of without) { if (n.includes(String(d))) { bad=true; break; } }
+        if (bad) continue;
+      }
+      // F2 Must have
+      if (mustSingle !== null && !n.includes(String(mustSingle))) continue;
+      if (mustMulti.length > 0) {
+        let ok=true;
+        for (let c of mustMulti) { if (!n.includes(c)) { ok=false; break; } }
+        if (!ok) continue;
+      }
+      // F3 Digital root
+      if (drFilter !== null && calcDigitalRoot(n) !== drFilter) continue;
+      // F4 Last digit
+      if (lastDig.length > 0 && !n.endsWith(lastDig)) continue;
+      // F5 Contains
+      if (middle.length > 0 && !n.includes(middle)) continue;
+      // F6 Repeat
+      if (repeat === 'yes') { if (new Set(n).size === n.length) continue; }
+      else if (repeat === 'no') { if (new Set(n).size !== n.length) continue; }
+
+      results.push(n);
+    }
+
+    const elapsed = (performance.now() - t0).toFixed(1);
+    document.getElementById('resultArea').value = results.join('\n');
+    document.getElementById('statMatched').textContent = results.length.toLocaleString();
+    document.getElementById('resultMeta').textContent = `${results.length.toLocaleString()} matched · ${elapsed}ms`;
+    updateActiveBadges(without, mustSingle, mustMulti, drFilter, lastDig, middle, repeat);
+
+    btn.classList.remove('loading');
+    spinner.classList.remove('show');
+    btnText.textContent = '⚡ \u00a0Search / Match';
+
+    showToast(
+      results.length > 0 ? `✓ ${results.length.toLocaleString()} numbers matched` : 'No numbers matched the filters',
+      results.length > 0 ? 'success' : 'warn'
+    );
+  }, 20);
+}
+
+function updateActiveBadges(without, mustSingle, mustMulti, dr, last, middle, repeat) {
+  const wrap = document.getElementById('activeFiltersWrap');
+  wrap.innerHTML = '';
+  const add = txt => { const b=document.createElement('span'); b.className='filter-badge'; b.textContent=txt; wrap.appendChild(b); };
+  if (without.size > 0) add(`Without: ${[...without].join(', ')}`);
+  if (mustSingle !== null) add(`Must Have: ${mustSingle}`);
+  if (mustMulti.length > 0) add(`Must Have: ${mustMulti.split('').join(' & ')}`);
+  if (dr !== null) add(`Digital Root: ${dr}`);
+  if (last.length > 0) add(`Ends With: ${last}`);
+  if (middle.length > 0) add(`Contains: ${middle}`);
+  if (repeat !== 'any') add(repeat==='yes' ? 'Has Repeats' : 'All Unique');
+}
+
+// ═══════════════════════════════════════════════════
+// EXPORT
+// ═══════════════════════════════════════════════════
+function getResults() { return document.getElementById('resultArea').value.trim().split('\n').filter(Boolean); }
+
+function copyResults() {
+  const r = getResults();
+  if (!r.length) { showToast('Nothing to copy','warn'); return; }
+  navigator.clipboard.writeText(r.join('\n')).then(() => showToast('✓ Copied to clipboard!')).catch(() => showToast('Copy failed','error'));
+}
+
+function downloadTxt() {
+  const r = getResults();
+  if (!r.length) { showToast('Nothing to export','warn'); return; }
+  const blob = new Blob([r.join('\n')],{type:'text/plain'});
+  const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='results.txt'; a.click();
+  showToast(`Downloaded ${r.length} numbers as TXT`);
+}
+
+function downloadExcel() {
+  const r = getResults();
+  if (!r.length) { showToast('Nothing to export','warn'); return; }
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.aoa_to_sheet([['Mobile Number'],...r.map(n=>[n])]);
+  ws['!cols'] = [{wch:20}];
+  XLSX.utils.book_append_sheet(wb, ws, 'Results');
+  XLSX.writeFile(wb,'results.xlsx');
+  showToast(`Downloaded ${r.length} numbers as Excel`);
+}
+
+// ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+let toastTimer = null;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className=''; }, 3000);
+}
+
+init();
+</script>
+</body>
+</html>
