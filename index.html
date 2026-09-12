@@ -678,9 +678,172 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   .brand-title{font-size:20px}
   .result-actions{flex-direction:column}
 }
+
+/* ═══════════════════════════════════════════════
+   ACCESS GATE / ADMIN CONSOLE
+═══════════════════════════════════════════════ */
+.gate-overlay{
+  position:fixed;inset:0;
+  z-index:100000;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:var(--grad-header);
+  overflow:auto;
+}
+.gate-overlay::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(255,255,255,0.06) 0%, transparent 40%);
+  pointer-events:none;
+}
+.gate-card{
+  position:relative;
+  width:100%;max-width:380px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:36px 30px 30px;
+  box-shadow:var(--shadow-lg);
+  text-align:center;
+}
+.gate-emblem{
+  width:60px;height:60px;
+  margin:0 auto 16px;
+  background:var(--grad-main);
+  border-radius:16px;
+  display:grid;place-items:center;
+  box-shadow:0 8px 24px rgba(124,58,237,0.35);
+}
+.gate-emblem svg{width:30px;height:30px}
+.gate-title{
+  font-family:var(--serif);
+  font-size:20px;font-weight:700;
+  color:var(--text);
+  letter-spacing:0.5px;
+  margin-bottom:6px;
+}
+.gate-sub{
+  font-size:13px;color:var(--text3);
+  margin-bottom:22px;font-weight:500;
+}
+.gate-card .text-input{margin-bottom:12px;text-align:center;font-family:var(--sans)}
+.gate-error{
+  min-height:18px;
+  font-size:12px;color:var(--error);
+  font-weight:600;margin-top:2px;margin-bottom:4px;
+}
+.gate-admin-link{
+  background:none;border:none;
+  color:var(--text3);
+  font-family:var(--sans);font-size:12px;font-weight:600;
+  letter-spacing:0.3px;cursor:pointer;
+  margin-top:16px;text-decoration:underline;
+  text-underline-offset:3px;
+}
+.gate-admin-link:hover{color:var(--g2)}
+.admin-card{max-width:420px;text-align:left}
+.admin-card .gate-title,.admin-card .gate-sub{text-align:center}
+.admin-add-row{display:flex;gap:8px;margin-bottom:14px}
+.admin-add-row .text-input{margin-bottom:0;text-align:left}
+.admin-add-row button{
+  flex-shrink:0;padding:0 18px;
+  background:var(--grad-main);border:none;border-radius:var(--radius-sm);
+  color:#fff;font-family:var(--sans);font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.admin-add-row button:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(124,58,237,0.3)}
+.admin-user-list{
+  max-height:220px;overflow-y:auto;
+  border:1px solid var(--border);border-radius:var(--radius-sm);
+  background:var(--surface2);
+  margin-bottom:6px;
+}
+.admin-user-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 14px;
+  font-family:var(--mono);font-size:13px;color:var(--text);
+  border-bottom:1px solid var(--border);
+}
+.admin-user-row:last-child{border-bottom:none}
+.admin-user-remove{
+  cursor:pointer;color:var(--text3);font-size:14px;
+  padding:2px 6px;border-radius:6px;transition:all .15s;
+}
+.admin-user-remove:hover{color:#fff;background:var(--error)}
+.admin-empty{
+  padding:20px;text-align:center;
+  color:var(--text3);font-size:13px;
+}
+.admin-panel-actions{display:flex;gap:10px;margin-top:16px}
+.admin-panel-actions .action-btn{margin:0}
 </style>
 </head>
 <body>
+
+<!-- ══════════════════════════════════════════
+     ACCESS GATE — shown before anything else loads
+══════════════════════════════════════════ -->
+<div class="gate-overlay" id="gateOverlay">
+  <div class="gate-card">
+    <div class="gate-emblem">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="11" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+        <path d="M9 14l3 3 7-7" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="gate-title">Restricted Access</div>
+    <div class="gate-sub">Enter your username to continue</div>
+    <input type="text" class="text-input" id="gateUsernameInput" placeholder="Username" autocomplete="off"/>
+    <div class="gate-error" id="gateError"></div>
+    <button class="search-btn" style="margin-top:6px" onclick="attemptLogin()">Enter →</button>
+    <button class="gate-admin-link" onclick="openAdminLogin()">Admin Login</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ADMIN LOGIN
+══════════════════════════════════════════ -->
+<div class="gate-overlay" id="adminLoginOverlay" style="display:none">
+  <div class="gate-card">
+    <div class="gate-emblem">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 4l8 3.5v6c0 5.5-3.4 9.6-8 10.5-4.6-.9-8-5-8-10.5v-6L14 4z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/>
+        <path d="M11 14l2 2 4-4" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="gate-title">Admin Login</div>
+    <div class="gate-sub">Enter the admin password</div>
+    <input type="password" class="text-input" id="adminPasswordInput" placeholder="Admin Password" autocomplete="off"/>
+    <div class="gate-error" id="adminLoginError"></div>
+    <button class="search-btn" style="margin-top:6px" onclick="attemptAdminLogin()">Login</button>
+    <button class="gate-admin-link" onclick="closeAdminLogin()">← Back to user login</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     ADMIN CONSOLE — manage allowed usernames
+══════════════════════════════════════════ -->
+<div class="gate-overlay" id="adminPanelOverlay" style="display:none">
+  <div class="gate-card admin-card">
+    <div class="gate-title">Admin Console</div>
+    <div class="gate-sub">Add or remove usernames allowed to access this tool</div>
+    <div class="admin-add-row">
+      <input type="text" class="text-input" id="adminNewUserInput" placeholder="New username" autocomplete="off"/>
+      <button onclick="addAdminUser()">+ Add</button>
+    </div>
+    <div class="admin-user-list" id="adminUserList"></div>
+    <div class="admin-panel-actions">
+      <button class="action-btn" onclick="closeAdminPanel()" style="width:100%">✓ Done — Back to Login</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     APP CONTENT — hidden until a valid username is entered
+══════════════════════════════════════════ -->
+<div id="appContent" style="display:none">
 
 <!-- ══════════════════════════════════════════
      HEADER
@@ -918,6 +1081,8 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 
   </div>
 </div>
+
+</div><!-- /#appContent -->
 
 <div id="toast"></div>
 
@@ -1355,6 +1520,138 @@ let toastTimer=null;
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`show ${type}`;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.className='';},3000);}
 
 init();
+
+// ═══════════════════════════════════════════════════
+// ACCESS GATE + ADMIN CONSOLE
+// Runs BEFORE the app content is shown. Allowed usernames
+// are kept in shared persistent storage so every device
+// checks against the same admin-managed list.
+// ═══════════════════════════════════════════════════
+const ADMIN_PASSWORD = 'Ricky@1212';
+const USERS_KEY = 'numerology-allowed-usernames';
+let allowedUsers = [];
+let currentUser = null;
+
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+async function loadAllowedUsers(){
+  try{
+    const res = await window.storage.get(USERS_KEY, true);
+    allowedUsers = res && res.value ? JSON.parse(res.value) : [];
+  }catch(e){
+    allowedUsers = [];
+  }
+}
+
+async function saveAllowedUsers(){
+  try{
+    const result = await window.storage.set(USERS_KEY, JSON.stringify(allowedUsers), true);
+    if(!result) showToast('Could not save username list','error');
+  }catch(e){
+    showToast('Could not save username list','error');
+  }
+}
+
+async function attemptLogin(){
+  const inp = document.getElementById('gateUsernameInput');
+  const err = document.getElementById('gateError');
+  const val = inp.value.trim();
+  if(!val){ err.textContent = 'Please enter a username'; return; }
+  if(allowedUsers.some(u => u.toLowerCase() === val.toLowerCase())){
+    currentUser = val;
+    err.textContent = '';
+    document.getElementById('gateOverlay').style.display = 'none';
+    document.getElementById('appContent').style.display = '';
+  } else {
+    err.textContent = 'Username not recognized. Contact admin for access.';
+  }
+}
+
+function openAdminLogin(){
+  document.getElementById('gateOverlay').style.display = 'none';
+  document.getElementById('adminLoginOverlay').style.display = 'flex';
+  document.getElementById('adminPasswordInput').value = '';
+  document.getElementById('adminLoginError').textContent = '';
+  setTimeout(()=>document.getElementById('adminPasswordInput').focus(),50);
+}
+
+function closeAdminLogin(){
+  document.getElementById('adminLoginOverlay').style.display = 'none';
+  document.getElementById('gateOverlay').style.display = 'flex';
+}
+
+function attemptAdminLogin(){
+  const val = document.getElementById('adminPasswordInput').value;
+  const err = document.getElementById('adminLoginError');
+  if(val === ADMIN_PASSWORD){
+    err.textContent = '';
+    document.getElementById('adminLoginOverlay').style.display = 'none';
+    openAdminPanel();
+  } else {
+    err.textContent = 'Incorrect password';
+  }
+}
+
+function openAdminPanel(){
+  document.getElementById('adminPanelOverlay').style.display = 'flex';
+  renderAdminUserList();
+  document.getElementById('adminNewUserInput').value = '';
+}
+
+function closeAdminPanel(){
+  document.getElementById('adminPanelOverlay').style.display = 'none';
+  document.getElementById('gateOverlay').style.display = 'flex';
+  document.getElementById('gateUsernameInput').value = '';
+  document.getElementById('gateError').textContent = '';
+}
+
+function renderAdminUserList(){
+  const c = document.getElementById('adminUserList');
+  c.innerHTML = '';
+  if(allowedUsers.length === 0){
+    c.innerHTML = '<div class="admin-empty">No users added yet — add a username below</div>';
+    return;
+  }
+  allowedUsers.forEach((u, i) => {
+    const row = document.createElement('div');
+    row.className = 'admin-user-row';
+    row.innerHTML = `<span>${escapeHtml(u)}</span><span class="admin-user-remove" onclick="removeAdminUser(${i})">✕</span>`;
+    c.appendChild(row);
+  });
+}
+
+async function addAdminUser(){
+  const inp = document.getElementById('adminNewUserInput');
+  const val = inp.value.trim();
+  if(!val){ return; }
+  if(allowedUsers.some(u => u.toLowerCase() === val.toLowerCase())){
+    showToast('User already exists','warn');
+    inp.value = '';
+    return;
+  }
+  allowedUsers.push(val);
+  inp.value = '';
+  await saveAllowedUsers();
+  renderAdminUserList();
+  showToast(`✓ Added user "${val}"`,'success');
+}
+
+async function removeAdminUser(idx){
+  const removed = allowedUsers.splice(idx, 1)[0];
+  await saveAllowedUsers();
+  renderAdminUserList();
+  showToast(`Removed user "${removed}"`,'info');
+}
+
+// Enter-key support
+document.getElementById('gateUsernameInput').addEventListener('keydown', e => { if(e.key === 'Enter') attemptLogin(); });
+document.getElementById('adminPasswordInput').addEventListener('keydown', e => { if(e.key === 'Enter') attemptAdminLogin(); });
+document.getElementById('adminNewUserInput').addEventListener('keydown', e => { if(e.key === 'Enter') addAdminUser(); });
+
+// Load the allowed-username list before the gate is usable
+loadAllowedUsers();
 </script>
 </body>
 </html>
