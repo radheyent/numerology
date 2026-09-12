@@ -1529,37 +1529,45 @@ init();
 // ═══════════════════════════════════════════════════
 const ADMIN_PASSWORD = 'Ricky@1212';
 const USERS_KEY = 'numerology-allowed-usernames';
-let allowedUsers = [];
+// Permanent usernames — always allowed, cannot be removed from the admin console,
+// and work even if browser storage is unavailable or gets cleared.
+const PERMANENT_USERS = ['ram', 'alok'];
+let allowedUsers = [];   // extra usernames added by the admin (saved in localStorage)
 let currentUser = null;
 
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-async function loadAllowedUsers(){
+function loadAllowedUsers(){
   try{
-    const res = await window.storage.get(USERS_KEY, true);
-    allowedUsers = res && res.value ? JSON.parse(res.value) : [];
+    const raw = localStorage.getItem(USERS_KEY);
+    allowedUsers = raw ? JSON.parse(raw) : [];
   }catch(e){
     allowedUsers = [];
   }
 }
 
-async function saveAllowedUsers(){
+function saveAllowedUsers(){
   try{
-    const result = await window.storage.set(USERS_KEY, JSON.stringify(allowedUsers), true);
-    if(!result) showToast('Could not save username list','error');
+    localStorage.setItem(USERS_KEY, JSON.stringify(allowedUsers));
   }catch(e){
-    showToast('Could not save username list','error');
+    showToast('Could not save username list on this browser','error');
   }
 }
 
-async function attemptLogin(){
+function isUsernameAllowed(val){
+  const lower = val.toLowerCase();
+  return PERMANENT_USERS.some(u => u.toLowerCase() === lower) ||
+         allowedUsers.some(u => u.toLowerCase() === lower);
+}
+
+function attemptLogin(){
   const inp = document.getElementById('gateUsernameInput');
   const err = document.getElementById('gateError');
   const val = inp.value.trim();
   if(!val){ err.textContent = 'Please enter a username'; return; }
-  if(allowedUsers.some(u => u.toLowerCase() === val.toLowerCase())){
+  if(isUsernameAllowed(val)){
     currentUser = val;
     err.textContent = '';
     document.getElementById('gateOverlay').style.display = 'none';
@@ -1610,7 +1618,14 @@ function closeAdminPanel(){
 function renderAdminUserList(){
   const c = document.getElementById('adminUserList');
   c.innerHTML = '';
-  if(allowedUsers.length === 0){
+  // Permanent users first — no remove button
+  PERMANENT_USERS.forEach(u => {
+    const row = document.createElement('div');
+    row.className = 'admin-user-row';
+    row.innerHTML = `<span>${escapeHtml(u)}</span><span style="font-size:10px;color:var(--text3);font-family:var(--sans);font-weight:700;letter-spacing:0.5px;text-transform:uppercase">Permanent</span>`;
+    c.appendChild(row);
+  });
+  if(allowedUsers.length === 0 && PERMANENT_USERS.length === 0){
     c.innerHTML = '<div class="admin-empty">No users added yet — add a username below</div>';
     return;
   }
@@ -1622,25 +1637,25 @@ function renderAdminUserList(){
   });
 }
 
-async function addAdminUser(){
+function addAdminUser(){
   const inp = document.getElementById('adminNewUserInput');
   const val = inp.value.trim();
   if(!val){ return; }
-  if(allowedUsers.some(u => u.toLowerCase() === val.toLowerCase())){
+  if(isUsernameAllowed(val)){
     showToast('User already exists','warn');
     inp.value = '';
     return;
   }
   allowedUsers.push(val);
   inp.value = '';
-  await saveAllowedUsers();
+  saveAllowedUsers();
   renderAdminUserList();
   showToast(`✓ Added user "${val}"`,'success');
 }
 
-async function removeAdminUser(idx){
+function removeAdminUser(idx){
   const removed = allowedUsers.splice(idx, 1)[0];
-  await saveAllowedUsers();
+  saveAllowedUsers();
   renderAdminUserList();
   showToast(`Removed user "${removed}"`,'info');
 }
@@ -1652,6 +1667,7 @@ document.getElementById('adminNewUserInput').addEventListener('keydown', e => { 
 
 // Load the allowed-username list before the gate is usable
 loadAllowedUsers();
+renderAdminUserList();
 </script>
 </body>
 </html>
