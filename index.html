@@ -1008,7 +1008,14 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
               <div class="radio-dot"></div> Max 3 times
             </label>
           </div>
-          <div class="input-hint">e.g. <b>Max 2</b> → koi bhi digit 2 baar se zyada repeat nahi hoga</div>
+          <div id="maxRepeatWrap" style="display:none;margin-top:10px">
+            <div class="filter-label" style="margin-bottom:6px;font-size:10px">Digits / sequences to limit</div>
+            <div class="tag-input-wrap" id="maxRepeatTagWrap">
+              <div class="tag-chips" id="maxRepeatChips"></div>
+              <input class="tag-input" id="maxRepeatInput" type="text" maxlength="5" placeholder="e.g. 1, 12 — press , or Enter"/>
+            </div>
+            <div class="input-hint">e.g. <b>Max 2</b> + <b>1, 12</b> → digit 1 aur sequence 12, 2 baar se zyada nahi aayenge</div>
+          </div>
         </div>
 
         <button class="action-btn" onclick="clearAllFilters()" style="width:100%;margin-bottom:2px">🗑&nbsp; Clear All Filters</button>
@@ -1043,7 +1050,8 @@ const state = {
   midTags: [],
   repeatMode: 'any',
   repeatDigitTags: [],
-  maxRepeat: 0,   // 0 = off, 2 = max 2 times, 3 = max 3 times
+  maxRepeat: 0,        // 0 = off, 2 = max 2 times, 3 = max 3 times
+  maxRepeatTags: [],   // digits/sequences the limit applies to
 };
 
 // INIT
@@ -1055,6 +1063,7 @@ function init() {
   setupTagInput('lastDigitInput',   'lastChips',        state.lastTags);
   setupTagInput('middleInput',      'midChips',         state.midTags);
   setupTagInput('repeatDigitInput', 'repeatChips',      state.repeatDigitTags);
+  setupTagInput('maxRepeatInput',   'maxRepeatChips',   state.maxRepeatTags);
   setupDropZone();
 }
 
@@ -1152,6 +1161,7 @@ function getTagArr(chipsId) {
   if (chipsId === 'lastChips')       return state.lastTags;
   if (chipsId === 'midChips')        return state.midTags;
   if (chipsId === 'repeatChips')     return state.repeatDigitTags;
+  if (chipsId === 'maxRepeatChips')  return state.maxRepeatTags;
 }
 
 // THEME
@@ -1279,6 +1289,7 @@ function setMaxRepeat(n) {
   state.maxRepeat = n;
   [['maxRepAnyOpt',0],['maxRep2Opt',2],['maxRep3Opt',3]].forEach(([id,v]) =>
     document.getElementById(id).classList.toggle('active', v === n));
+  document.getElementById('maxRepeatWrap').style.display = n > 0 ? 'block' : 'none';
 }
 
 function clearAllFilters() {
@@ -1296,6 +1307,9 @@ function clearAllFilters() {
   switchMustMode('single');
   setRepeat('any');
   state.maxRepeat = 0;
+  state.maxRepeatTags.length = 0;
+  document.getElementById('maxRepeatChips').innerHTML = '';
+  document.getElementById('maxRepeatInput').value = '';
   setMaxRepeat(0);
   document.querySelectorAll('input[name="maxRepeat"]')[0].checked = true;
   document.querySelectorAll('input[name="mustMode"]')[0].checked=true;
@@ -1316,10 +1330,10 @@ function runSearch() {
   btn.classList.add('loading');spinner.classList.add('show');btnText.textContent='Processing…';
 
   // Flush any pending tag inputs
-  ['mustMultiInput','lastDigitInput','middleInput','repeatDigitInput'].forEach(id=>{
+  ['mustMultiInput','lastDigitInput','middleInput','repeatDigitInput','maxRepeatInput'].forEach(id=>{
     const el=document.getElementById(id);
     if(el&&el.value.trim()){
-      const map={'mustMultiInput':'mustMultiChips','lastDigitInput':'lastChips','middleInput':'midChips','repeatDigitInput':'repeatChips'};
+      const map={'mustMultiInput':'mustMultiChips','lastDigitInput':'lastChips','middleInput':'midChips','repeatDigitInput':'repeatChips','maxRepeatInput':'maxRepeatChips'};
       addTag(el, map[id], getTagArr(map[id]));
     }
   });
@@ -1333,6 +1347,7 @@ function runSearch() {
   const repeat        = state.repeatMode;
   const repeatDigits  = state.repeatDigitTags;
   const maxRep        = state.maxRepeat;
+  const maxRepTags    = state.maxRepeatTags;
 
   setTimeout(()=>{
     const t0=performance.now();
@@ -1393,12 +1408,13 @@ function runSearch() {
         if(new Set(n).size!==n.length) continue;
       }
 
-      // F7 Max Digit Repeat — no digit may appear more than maxRep times
-      if(maxRep>0){
-        const cnt=new Array(10).fill(0);
+      // F7 Max Repeat — each entered digit/sequence may appear at most maxRep times
+      if(maxRep>0 && maxRepTags.length>0){
         let bad=false;
-        for(let k=0;k<n.length;k++){
-          if(++cnt[+n[k]]>maxRep){bad=true;break;}
+        for(const t of maxRepTags){
+          let cnt=0, pos=n.indexOf(t);
+          while(pos!==-1){cnt++; if(cnt>maxRep){bad=true;break;} pos=n.indexOf(t,pos+1);}
+          if(bad) break;
         }
         if(bad) continue;
       }
@@ -1427,7 +1443,7 @@ function updateActiveBadges(){
   if(state.midTags.length>0)             add(`Contains: ${state.midTags.join(', ')}`);
   if(state.repeatMode==='yes')           add(state.repeatDigitTags.length?`Repeats: ${state.repeatDigitTags.join(', ')}`:'Has Repeats');
   if(state.repeatMode==='no')            add('All Unique');
-  if(state.maxRepeat>0)                  add(`Max ${state.maxRepeat}x per digit`);
+  if(state.maxRepeat>0&&state.maxRepeatTags.length>0) add(`Max ${state.maxRepeat}x: ${state.maxRepeatTags.join(', ')}`);
 }
 
 // EXPORT
