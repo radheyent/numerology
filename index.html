@@ -7,9 +7,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════════════
-   LIGHT MODE (default)
-═══════════════════════════════════════════════ */
+/* LIGHT MODE (default) */
 :root {
   --bg:       #f4f1ff;
   --bg2:      #ede9ff;
@@ -57,9 +55,7 @@
   --mono:    'JetBrains Mono', monospace;
 }
 
-/* ═══════════════════════════════════════════════
-   DARK MODE
-═══════════════════════════════════════════════ */
+/* DARK MODE */
 [data-theme="dark"] {
   --bg:       #0c0a1a;
   --bg2:      #110e24;
@@ -83,9 +79,7 @@
   --shadow-glow: 0 0 40px rgba(168,85,247,0.3);
 }
 
-/* ═══════════════════════════════════════════════
-   RESET & BASE
-═══════════════════════════════════════════════ */
+/* RESET & BASE */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{
@@ -108,9 +102,7 @@ body::before{
 }
 .app-wrapper{max-width:1280px;margin:0 auto;padding:0 20px 80px;position:relative;z-index:1}
 
-/* ═══════════════════════════════════════════════
-   HEADER HERO
-═══════════════════════════════════════════════ */
+/* HEADER HERO */
 .site-header{
   background:var(--grad-header);
   margin:0 -20px 32px;
@@ -146,7 +138,6 @@ body::before{
   box-shadow:0 8px 24px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.3);
 }
 .brand-emblem svg{width:28px;height:28px}
-.brand-copy{}
 .brand-title{
   font-family:var(--serif);
   font-size:26px;
@@ -182,9 +173,7 @@ body::before{
 }
 .theme-btn:hover{background:rgba(255,255,255,0.25);border-color:rgba(255,255,255,0.5);transform:translateY(-1px)}
 
-/* ═══════════════════════════════════════════════
-   STATS ROW
-═══════════════════════════════════════════════ */
+/* STATS ROW */
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
 @media(max-width:640px){.stats-row{grid-template-columns:repeat(2,1fr)}}
 .stat-pill{
@@ -225,15 +214,11 @@ body::before{
 .stat-pill.s4 .stat-num{background:var(--grad-main);-webkit-background-clip:text;background-clip:text}
 .stat-label{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:1.5px;margin-top:5px;font-weight:600}
 
-/* ═══════════════════════════════════════════════
-   MAIN GRID
-═══════════════════════════════════════════════ */
+/* MAIN GRID */
 .main-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
 @media(max-width:960px){.main-grid{grid-template-columns:1fr}}
 
-/* ═══════════════════════════════════════════════
-   CARDS
-═══════════════════════════════════════════════ */
+/* CARDS */
 .card{
   background:var(--grad-card);
   border:1px solid var(--border);
@@ -267,9 +252,7 @@ body::before{
 }
 .section-sub{font-size:11px;color:var(--text3);margin-left:auto;font-weight:500;letter-spacing:0.5px}
 
-/* ═══════════════════════════════════════════════
-   TABS
-═══════════════════════════════════════════════ */
+/* TABS */
 .tab-bar{
   display:flex;
   background:var(--surface3);
@@ -292,9 +275,7 @@ body::before{
   box-shadow:0 4px 14px rgba(124,58,237,0.35);
 }
 
-/* ═══════════════════════════════════════════════
-   TEXTAREA
-═══════════════════════════════════════════════ */
+/* TEXTAREA */
 textarea{
   width:100%;
   background:var(--surface2);
@@ -310,9 +291,7 @@ textarea{
 textarea:focus{border-color:var(--g2);box-shadow:0 0 0 3px rgba(168,85,247,0.1)}
 textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 
-/* ═══════════════════════════════════════════════
-   UPLOAD ZONE
-═══════════════════════════════════════════════ */
+/* UPLOAD ZONE */
 .upload-zone{
   border:2px dashed var(--border2);
   border-radius:var(--radius-sm);
@@ -343,9 +322,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .progress-bar.show{display:block}
 .progress-fill{height:100%;background:var(--grad-main);width:0%;transition:width .3s;border-radius:2px}
 
-/* ═══════════════════════════════════════════════
-   OPTIONS TOGGLE
-═══════════════════════════════════════════════ */
+/* OPTIONS TOGGLE */
 .options-row{display:flex;align-items:center;gap:12px;margin-top:14px;flex-wrap:wrap}
 .toggle-wrap{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text2);cursor:pointer;user-select:none;font-weight:500}
 .toggle{width:40px;height:22px;background:var(--border2);border-radius:11px;position:relative;transition:background .25s;flex-shrink:0}
@@ -353,9 +330,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .toggle::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .25s;box-shadow:0 2px 4px rgba(0,0,0,0.2)}
 .toggle.on::after{left:21px}
 
-/* ═══════════════════════════════════════════════
-   FILTER PANEL
-═══════════════════════════════════════════════ */
+/* FILTER PANEL */
 .filter-section{margin-bottom:16px}
 .filter-label{
   font-size:11px;font-weight:700;
@@ -374,9 +349,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .filter-tag.exclude{background:rgba(244,63,94,0.1);color:#f43f5e;border:1px solid rgba(244,63,94,0.2)}
 .filter-tag.include{background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.2)}
 
-/* ═══════════════════════════════════════════════
-   DIGIT BUTTONS
-═══════════════════════════════════════════════ */
+/* DIGIT BUTTONS */
 .digit-btns{display:flex;flex-wrap:wrap;gap:6px}
 .digit-btn{
   width:38px;height:38px;
@@ -409,9 +382,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 }
 .digit-btn.clear-btn:hover{color:var(--error);border-color:var(--error);background:rgba(244,63,94,0.05)}
 
-/* ═══════════════════════════════════════════════
-   RADIO OPTIONS
-═══════════════════════════════════════════════ */
+/* RADIO OPTIONS */
 .radio-group{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}
 .radio-opt{
   display:flex;align-items:center;gap:6px;
@@ -430,9 +401,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .radio-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:background .15s;flex-shrink:0}
 .radio-opt.active .radio-dot{background:var(--g2)}
 
-/* ═══════════════════════════════════════════════
-   TEXT INPUTS
-═══════════════════════════════════════════════ */
+/* TEXT INPUTS */
 .text-input{
   width:100%;
   background:var(--surface2);
@@ -447,18 +416,14 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .text-input::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px;font-weight:400}
 .input-hint{font-size:11px;color:var(--text3);margin-top:5px;line-height:1.4}
 
-/* ═══════════════════════════════════════════════
-   DIVIDER
-═══════════════════════════════════════════════ */
+/* DIVIDER */
 .filter-divider{
   height:1px;
   background:linear-gradient(90deg, transparent, var(--border2) 30%, var(--border2) 70%, transparent);
   margin:15px 0;
 }
 
-/* ═══════════════════════════════════════════════
-   SEARCH BUTTON
-═══════════════════════════════════════════════ */
+/* SEARCH BUTTON */
 .search-btn{
   width:100%;padding:15px;
   background:var(--grad-main);
@@ -485,9 +450,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .search-btn:active{transform:translateY(0)}
 .search-btn.loading{background:var(--surface3);color:var(--text3);cursor:not-allowed;box-shadow:none}
 
-/* ═══════════════════════════════════════════════
-   RESULT SECTION
-═══════════════════════════════════════════════ */
+/* RESULT SECTION */
 .result-area{
   width:100%;
   background:var(--surface2);
@@ -518,9 +481,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 .action-btn.excel-btn:hover{border-color:var(--g6);color:var(--g6);background:rgba(16,185,129,0.05)}
 .action-btn.clear-res-btn:hover{border-color:var(--error);color:var(--error);background:rgba(244,63,94,0.05)}
 
-/* ═══════════════════════════════════════════════
-   ACTIVE FILTER BADGES
-═══════════════════════════════════════════════ */
+/* ACTIVE FILTER BADGES */
 .active-filters{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;min-height:24px}
 .filter-badge{
   padding:4px 11px;
@@ -531,9 +492,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   font-family:var(--mono);font-weight:500;
 }
 
-/* ═══════════════════════════════════════════════
-   TAG CHIP INPUT SYSTEM
-═══════════════════════════════════════════════ */
+/* TAG CHIP INPUT SYSTEM */
 .tag-input-wrap{
   display:flex;flex-wrap:wrap;align-items:center;gap:6px;
   background:var(--surface2);
@@ -573,7 +532,6 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 }
 .tag-input::placeholder{color:var(--text4);font-family:var(--sans);font-size:12px}
 
-/* Digital root multi — selected = gradient btn */
 .digit-btn.multi-selected{
   background:linear-gradient(135deg,#06b6d4,#10b981);
   border-color:transparent;color:#fff;
@@ -581,10 +539,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   transform:translateY(-1px);
 }
 
-
-/* ═══════════════════════════════════════════════
-   TOAST
-═══════════════════════════════════════════════ */
+/* TOAST */
 #toast{
   position:fixed;bottom:28px;right:28px;
   padding:13px 22px;
@@ -603,16 +558,12 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 #toast.warn{background:linear-gradient(135deg,#451a03,#78350f);border:1px solid #f59e0b;color:#fcd34d}
 #toast.info{background:linear-gradient(135deg,#1e1b4b,#312e81);border:1px solid #6366f1;color:#c7d2fe}
 
-/* ═══════════════════════════════════════════════
-   SPINNER
-═══════════════════════════════════════════════ */
+/* SPINNER */
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner{width:17px;height:17px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none;flex-shrink:0}
 .spinner.show{display:inline-block}
 
-/* ═══════════════════════════════════════════════
-   FILTER PANEL HEADER GRADIENT STRIP
-═══════════════════════════════════════════════ */
+/* FILTER PANEL HEADER */
 .filter-card-head{
   margin:-26px -26px 20px;
   padding:18px 26px;
@@ -633,9 +584,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   letter-spacing:1px;text-transform:uppercase;
 }
 
-/* ═══════════════════════════════════════════════
-   RESULT CARD HEAD
-═══════════════════════════════════════════════ */
+/* RESULT CARD HEAD */
 .result-head{
   display:flex;align-items:center;justify-content:space-between;
   margin-bottom:10px;flex-wrap:wrap;gap:8px;
@@ -648,17 +597,13 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 }
 .result-meta{font-size:11px;color:var(--text3);font-family:var(--mono);font-weight:500}
 
-/* ═══════════════════════════════════════════════
-   SCROLLBAR
-═══════════════════════════════════════════════ */
+/* SCROLLBAR */
 ::-webkit-scrollbar{width:6px;height:6px}
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
 ::-webkit-scrollbar-thumb:hover{background:var(--g2)}
 
-/* ═══════════════════════════════════════════════
-   PASTE COUNT CHIP
-═══════════════════════════════════════════════ */
+/* PASTE COUNT CHIP */
 .count-chip{
   padding:4px 12px;
   background:rgba(16,185,129,0.1);
@@ -670,18 +615,14 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 }
 .count-chip.show{display:inline-flex;align-items:center;gap:5px}
 
-/* ═══════════════════════════════════════════════
-   RESPONSIVE
-═══════════════════════════════════════════════ */
+/* RESPONSIVE */
 @media(max-width:600px){
   .site-header{padding:24px 20px 22px}
   .brand-title{font-size:20px}
   .result-actions{flex-direction:column}
 }
 
-/* ═══════════════════════════════════════════════
-   ACCESS GATE / ADMIN CONSOLE
-═══════════════════════════════════════════════ */
+/* ACCESS GATE / ADMIN CONSOLE */
 .gate-overlay{
   position:fixed;inset:0;
   z-index:100000;
@@ -782,9 +723,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 </head>
 <body>
 
-<!-- ══════════════════════════════════════════
-     ACCESS GATE — shown before anything else loads
-══════════════════════════════════════════ -->
+<!-- ACCESS GATE -->
 <div class="gate-overlay" id="gateOverlay">
   <div class="gate-card">
     <div class="gate-emblem">
@@ -802,9 +741,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     ADMIN LOGIN
-══════════════════════════════════════════ -->
+<!-- ADMIN LOGIN -->
 <div class="gate-overlay" id="adminLoginOverlay" style="display:none">
   <div class="gate-card">
     <div class="gate-emblem">
@@ -822,9 +759,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     ADMIN CONSOLE — manage allowed usernames
-══════════════════════════════════════════ -->
+<!-- ADMIN CONSOLE -->
 <div class="gate-overlay" id="adminPanelOverlay" style="display:none">
   <div class="gate-card admin-card">
     <div class="gate-title">Admin Console</div>
@@ -840,14 +775,9 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     APP CONTENT — hidden until a valid username is entered
-══════════════════════════════════════════ -->
+<!-- APP CONTENT -->
 <div id="appContent" style="display:none">
 
-<!-- ══════════════════════════════════════════
-     HEADER
-══════════════════════════════════════════ -->
 <header class="site-header">
   <div class="app-wrapper" style="padding-top:0;padding-bottom:0">
     <div class="header-inner">
@@ -876,9 +806,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 
 <div class="app-wrapper">
 
-  <!-- ══════════════════════════════════════════
-       STATS
-  ══════════════════════════════════════════ -->
+  <!-- STATS -->
   <div class="stats-row">
     <div class="stat-pill s1">
       <div class="stat-num" id="statTotal">0</div>
@@ -900,12 +828,9 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 
   <div class="main-grid">
 
-    <!-- ══════════════════════════════════════
-         LEFT — INPUT + RESULT
-    ══════════════════════════════════════ -->
+    <!-- LEFT — INPUT + RESULT -->
     <div>
 
-      <!-- INPUT CARD -->
       <div class="card">
         <div class="section-label">
           <div class="section-num">01</div>
@@ -966,9 +891,7 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 
     </div>
 
-    <!-- ══════════════════════════════════════
-         RIGHT — FILTER PANEL
-    ══════════════════════════════════════ -->
+    <!-- RIGHT — FILTER PANEL -->
     <div>
       <div class="card">
         <div class="filter-card-head">
@@ -996,12 +919,10 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
               <div class="radio-dot"></div> Multi (Text)
             </label>
           </div>
-          <!-- Single = multi-select digit buttons -->
           <div id="singleDigitWrap">
             <div class="digit-btns" id="mustHaveBtns"></div>
             <div class="input-hint" style="margin-top:6px">Click multiple digits — number must contain ALL selected</div>
           </div>
-          <!-- Multi = comma-separated text with chips -->
           <div id="multiDigitWrap" style="display:none">
             <div class="tag-input-wrap" id="mustMultiTagWrap">
               <div class="tag-chips" id="mustMultiChips"></div>
@@ -1059,7 +980,6 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
               <div class="radio-dot"></div> All Digits Unique
             </label>
           </div>
-          <!-- Repeat Required → specific repeated digits (optional) -->
           <div id="repeatDigitWrap" style="display:none;margin-top:10px">
             <div class="filter-label" style="margin-bottom:6px;font-size:10px">Specific digits that must repeat (optional)</div>
             <div class="tag-input-wrap" id="repeatTagWrap">
@@ -1068,6 +988,27 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
             </div>
             <div class="input-hint">e.g. <b>7, 9</b> → number must have digit 7 or 9 repeating</div>
           </div>
+        </div>
+        <div class="filter-divider"></div>
+
+        <!-- F7: MAX DIGIT REPEAT (NEW) -->
+        <div class="filter-section">
+          <div class="filter-label">Max Digit Repeat <span class="filter-tag exclude">Limit</span></div>
+          <div class="radio-group">
+            <label class="radio-opt active" id="maxRepAnyOpt">
+              <input type="radio" name="maxRepeat" value="0" checked onchange="setMaxRepeat(0)"/>
+              <div class="radio-dot"></div> Any
+            </label>
+            <label class="radio-opt" id="maxRep2Opt">
+              <input type="radio" name="maxRepeat" value="2" onchange="setMaxRepeat(2)"/>
+              <div class="radio-dot"></div> Max 2 times
+            </label>
+            <label class="radio-opt" id="maxRep3Opt">
+              <input type="radio" name="maxRepeat" value="3" onchange="setMaxRepeat(3)"/>
+              <div class="radio-dot"></div> Max 3 times
+            </label>
+          </div>
+          <div class="input-hint">e.g. <b>Max 2</b> → koi bhi digit 2 baar se zyada repeat nahi hoga</div>
         </div>
 
         <button class="action-btn" onclick="clearAllFilters()" style="width:100%;margin-bottom:2px">🗑&nbsp; Clear All Filters</button>
@@ -1087,34 +1028,25 @@ textarea::placeholder{color:var(--text4);font-family:var(--sans);font-size:13px}
 <div id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════════════════
 // STATE
-// ═══════════════════════════════════════════════════
 const state = {
   numbers: [],
   invalidCount: 0,
   removeDuplicates: true,
   activeTab: 'paste',
-  // F1
   withoutDigits: new Set(),
-  // F2
   mustMode: 'single',
-  mustSingleDigits: new Set(),  // multi-select buttons
-  mustMultiTags: [],            // comma-separated text tags
-  // F3
-  digitalRoots: new Set(),      // multi-select buttons
-  // F4
-  lastTags: [],                 // comma-separated "ends with" sequences
-  // F5
-  midTags: [],                  // comma-separated "contains" sequences
-  // F6
+  mustSingleDigits: new Set(),
+  mustMultiTags: [],
+  digitalRoots: new Set(),
+  lastTags: [],
+  midTags: [],
   repeatMode: 'any',
-  repeatDigitTags: [],          // specific digits that must repeat
+  repeatDigitTags: [],
+  maxRepeat: 0,   // 0 = off, 2 = max 2 times, 3 = max 3 times
 };
 
-// ═══════════════════════════════════════════════════
 // INIT
-// ═══════════════════════════════════════════════════
 function init() {
   buildDigitBtns('withoutDigitBtns', toggleWithout, true);
   buildDigitBtns('mustHaveBtns', toggleMustSingle, true);
@@ -1126,7 +1058,7 @@ function init() {
   setupDropZone();
 }
 
-// ─── DIGIT BUTTON BUILDER ─────────────────────────
+// DIGIT BUTTON BUILDER
 function buildDigitBtns(containerId, handler, withClear) {
   const c = document.getElementById(containerId);
   c.innerHTML = '';
@@ -1159,26 +1091,22 @@ function clearDigitBtns(containerId, resetFn) {
   if (resetFn) resetFn();
 }
 
-// F1 Without — multi select
 function toggleWithout(digit, btn) {
   if (state.withoutDigits.has(digit)) { state.withoutDigits.delete(digit); btn.classList.remove('selected'); }
   else { state.withoutDigits.add(digit); btn.classList.add('selected'); }
 }
 
-// F2 Must Single — multi-select buttons (number must contain ALL selected)
 function toggleMustSingle(digit, btn) {
   if (state.mustSingleDigits.has(digit)) { state.mustSingleDigits.delete(digit); btn.classList.remove('selected'); }
   else { state.mustSingleDigits.add(digit); btn.classList.add('selected'); }
 }
 
-// F3 Digital Root — multi-select (match ANY selected root)
 function toggleDigitalRoot(digit, btn) {
   if (state.digitalRoots.has(digit)) { state.digitalRoots.delete(digit); btn.classList.remove('selected','multi-selected'); }
   else { state.digitalRoots.add(digit); btn.classList.add('selected','multi-selected'); }
 }
 
-// ─── TAG CHIP INPUT SYSTEM ────────────────────────
-// Works for: mustMulti, lastDigit, contains, repeatDigits
+// TAG CHIP INPUT SYSTEM
 function setupTagInput(inputId, chipsId, tagsArr) {
   const inp = document.getElementById(inputId);
   if (!inp) return;
@@ -1219,7 +1147,6 @@ function renderChips(chipsId, tagsArr) {
   });
 }
 
-// Map chipsId back to state array
 function getTagArr(chipsId) {
   if (chipsId === 'mustMultiChips')  return state.mustMultiTags;
   if (chipsId === 'lastChips')       return state.lastTags;
@@ -1227,9 +1154,7 @@ function getTagArr(chipsId) {
   if (chipsId === 'repeatChips')     return state.repeatDigitTags;
 }
 
-// ═══════════════════════════════════════════════════
 // THEME
-// ═══════════════════════════════════════════════════
 function toggleTheme() {
   const html = document.documentElement;
   const isDark = html.dataset.theme === 'dark';
@@ -1237,9 +1162,7 @@ function toggleTheme() {
   document.getElementById('themeBtn').textContent = isDark ? '🌙 Dark Mode' : '☀️ Light Mode';
 }
 
-// ═══════════════════════════════════════════════════
 // TABS
-// ═══════════════════════════════════════════════════
 function switchTab(tab, btn) {
   state.activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -1248,9 +1171,7 @@ function switchTab(tab, btn) {
   document.getElementById('uploadPanel').style.display = tab==='upload' ? '' : 'none';
 }
 
-// ═══════════════════════════════════════════════════
 // OPTIONS
-// ═══════════════════════════════════════════════════
 function toggleOption() {
   state.removeDuplicates = !state.removeDuplicates;
   const cls = state.removeDuplicates ? 'on' : '';
@@ -1258,9 +1179,7 @@ function toggleOption() {
   if (state.activeTab==='paste') handlePasteInput();
 }
 
-// ═══════════════════════════════════════════════════
 // PASTE
-// ═══════════════════════════════════════════════════
 let pasteDebounce = null;
 function handlePasteInput() {
   clearTimeout(pasteDebounce);
@@ -1269,9 +1188,7 @@ function handlePasteInput() {
   }, 300);
 }
 
-// ═══════════════════════════════════════════════════
 // FILE UPLOAD
-// ═══════════════════════════════════════════════════
 function setupDropZone() {
   const dz = document.getElementById('dropZone');
   ['dragenter','dragover'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('drag'); }));
@@ -1314,9 +1231,7 @@ function updateFileInfo(name) {
   info.textContent=`✓ ${name}  |  Total: ${state.numbers.length+state.invalidCount}  |  Valid: ${state.numbers.length}  |  Invalid: ${state.invalidCount}`;
 }
 
-// ═══════════════════════════════════════════════════
 // PARSE NUMBERS
-// ═══════════════════════════════════════════════════
 function parseNumbers(lines) {
   let valid=[], invalid=0; const seen=new Set();
   for (let line of lines) {
@@ -1335,9 +1250,7 @@ function parseNumbers(lines) {
   if(valid.length) showToast(`✓ ${valid.length.toLocaleString()} valid numbers loaded`,'success');
 }
 
-// ═══════════════════════════════════════════════════
 // STATS
-// ═══════════════════════════════════════════════════
 function updateStats(total,valid,invalid,matched){
   document.getElementById('statTotal').textContent=total.toLocaleString();
   document.getElementById('statValid').textContent=valid.toLocaleString();
@@ -1345,9 +1258,7 @@ function updateStats(total,valid,invalid,matched){
   document.getElementById('statMatched').textContent=matched.toLocaleString();
 }
 
-// ═══════════════════════════════════════════════════
 // FILTER CONTROLS
-// ═══════════════════════════════════════════════════
 function switchMustMode(mode) {
   state.mustMode=mode;
   document.getElementById('mustSingleOpt').classList.toggle('active',mode==='single');
@@ -1361,6 +1272,13 @@ function setRepeat(val) {
   ['repeatAnyOpt','repeatYesOpt','repeatNoOpt'].forEach(id=>document.getElementById(id).classList.remove('active'));
   document.getElementById(val==='any'?'repeatAnyOpt':val==='yes'?'repeatYesOpt':'repeatNoOpt').classList.add('active');
   document.getElementById('repeatDigitWrap').style.display=val==='yes'?'block':'none';
+}
+
+// F7 Max Digit Repeat
+function setMaxRepeat(n) {
+  state.maxRepeat = n;
+  [['maxRepAnyOpt',0],['maxRep2Opt',2],['maxRep3Opt',3]].forEach(([id,v]) =>
+    document.getElementById(id).classList.toggle('active', v === n));
 }
 
 function clearAllFilters() {
@@ -1377,22 +1295,21 @@ function clearAllFilters() {
   ['mustMultiInput','lastDigitInput','middleInput','repeatDigitInput'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
   switchMustMode('single');
   setRepeat('any');
+  state.maxRepeat = 0;
+  setMaxRepeat(0);
+  document.querySelectorAll('input[name="maxRepeat"]')[0].checked = true;
   document.querySelectorAll('input[name="mustMode"]')[0].checked=true;
   showToast('All filters cleared','info');
 }
 
-// ═══════════════════════════════════════════════════
 // DIGITAL ROOT
-// ═══════════════════════════════════════════════════
 function calcDigitalRoot(num) {
   let n=0; for(let c of num)n+=+c;
   while(n>=10){let s=0;while(n>0){s+=n%10;n=Math.floor(n/10);}n=s;}
   return n;
 }
 
-// ═══════════════════════════════════════════════════
 // SEARCH ENGINE
-// ═══════════════════════════════════════════════════
 function runSearch() {
   if(state.numbers.length===0){showToast('No numbers loaded — paste or upload first','warn');return;}
   const btn=document.getElementById('searchBtn'),spinner=document.getElementById('searchSpinner'),btnText=document.getElementById('searchBtnText');
@@ -1407,7 +1324,6 @@ function runSearch() {
     }
   });
 
-  // Collect
   const without       = state.withoutDigits;
   const mustSingles   = state.mustMode==='single' ? state.mustSingleDigits : null;
   const mustMultis    = state.mustMode==='multi'  ? state.mustMultiTags    : [];
@@ -1416,6 +1332,7 @@ function runSearch() {
   const midArr        = state.midTags;
   const repeat        = state.repeatMode;
   const repeatDigits  = state.repeatDigitTags;
+  const maxRep        = state.maxRepeat;
 
   setTimeout(()=>{
     const t0=performance.now();
@@ -1424,7 +1341,7 @@ function runSearch() {
     for(let i=0;i<nums.length;i++){
       const n=nums[i];
 
-      // F1 Without — skip if contains ANY excluded digit
+      // F1 Without
       if(without.size>0){
         let bad=false;
         for(const d of without){if(n.includes(String(d))){bad=true;break;}}
@@ -1433,29 +1350,27 @@ function runSearch() {
 
       // F2 Must Have
       if(mustSingles!==null && mustSingles.size>0){
-        // number must contain ALL selected digits
         let ok=true;
         for(const d of mustSingles){if(!n.includes(String(d))){ok=false;break;}}
         if(!ok) continue;
       }
       if(mustMultis.length>0){
-        // number must contain ALL of each tag entry
         let ok=true;
         for(const tag of mustMultis){if(!n.includes(tag)){ok=false;break;}}
         if(!ok) continue;
       }
 
-      // F3 Digital Root — match ANY selected root
+      // F3 Digital Root
       if(drSet.size>0 && !drSet.has(calcDigitalRoot(n))) continue;
 
-      // F4 Last Digit — match ANY tag
+      // F4 Last Digit
       if(lastArr.length>0){
         let ok=false;
         for(const t of lastArr){if(n.endsWith(t)){ok=true;break;}}
         if(!ok) continue;
       }
 
-      // F5 Contains — match ANY tag
+      // F5 Contains
       if(midArr.length>0){
         let ok=false;
         for(const t of midArr){if(n.includes(t)){ok=true;break;}}
@@ -1465,8 +1380,7 @@ function runSearch() {
       // F6 Repeat
       if(repeat==='yes'){
         const set=new Set(n);
-        if(set.size===n.length) continue; // all unique → skip
-        // If specific repeat digits specified, at least one must actually repeat
+        if(set.size===n.length) continue;
         if(repeatDigits.length>0){
           let ok=false;
           for(const d of repeatDigits){
@@ -1477,6 +1391,16 @@ function runSearch() {
         }
       } else if(repeat==='no'){
         if(new Set(n).size!==n.length) continue;
+      }
+
+      // F7 Max Digit Repeat — no digit may appear more than maxRep times
+      if(maxRep>0){
+        const cnt=new Array(10).fill(0);
+        let bad=false;
+        for(let k=0;k<n.length;k++){
+          if(++cnt[+n[k]]>maxRep){bad=true;break;}
+        }
+        if(bad) continue;
       }
 
       results.push(n);
@@ -1503,36 +1427,26 @@ function updateActiveBadges(){
   if(state.midTags.length>0)             add(`Contains: ${state.midTags.join(', ')}`);
   if(state.repeatMode==='yes')           add(state.repeatDigitTags.length?`Repeats: ${state.repeatDigitTags.join(', ')}`:'Has Repeats');
   if(state.repeatMode==='no')            add('All Unique');
+  if(state.maxRepeat>0)                  add(`Max ${state.maxRepeat}x per digit`);
 }
 
-// ═══════════════════════════════════════════════════
 // EXPORT
-// ═══════════════════════════════════════════════════
 function getResults(){return document.getElementById('resultArea').value.trim().split('\n').filter(Boolean);}
 function copyResults(){const r=getResults();if(!r.length){showToast('Nothing to copy','warn');return;}navigator.clipboard.writeText(r.join('\n')).then(()=>showToast('✓ Copied to clipboard!')).catch(()=>showToast('Copy failed','error'));}
 function downloadTxt(){const r=getResults();if(!r.length){showToast('Nothing to export','warn');return;}const blob=new Blob([r.join('\n')],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='results.txt';a.click();showToast(`Downloaded ${r.length} numbers as TXT`);}
 function downloadExcel(){const r=getResults();if(!r.length){showToast('Nothing to export','warn');return;}const wb=XLSX.utils.book_new();const ws=XLSX.utils.aoa_to_sheet([['Mobile Number'],...r.map(n=>[n])]);ws['!cols']=[{wch:20}];XLSX.utils.book_append_sheet(wb,ws,'Results');XLSX.writeFile(wb,'results.xlsx');showToast(`Downloaded ${r.length} numbers as Excel`);}
 
-// ═══════════════════════════════════════════════════
 // TOAST
-// ═══════════════════════════════════════════════════
 let toastTimer=null;
 function showToast(msg,type='success'){const t=document.getElementById('toast');t.textContent=msg;t.className=`show ${type}`;clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.className='';},3000);}
 
 init();
 
-// ═══════════════════════════════════════════════════
 // ACCESS GATE + ADMIN CONSOLE
-// Runs BEFORE the app content is shown. Allowed usernames
-// are kept in shared persistent storage so every device
-// checks against the same admin-managed list.
-// ═══════════════════════════════════════════════════
 const ADMIN_PASSWORD = 'Ricky@1212';
 const USERS_KEY = 'numerology-allowed-usernames';
-// Permanent usernames — always allowed, cannot be removed from the admin console,
-// and work even if browser storage is unavailable or gets cleared.
 const PERMANENT_USERS = ['ram', 'alok'];
-let allowedUsers = [];   // extra usernames added by the admin (saved in localStorage)
+let allowedUsers = [];
 let currentUser = null;
 
 function escapeHtml(s){
@@ -1618,7 +1532,6 @@ function closeAdminPanel(){
 function renderAdminUserList(){
   const c = document.getElementById('adminUserList');
   c.innerHTML = '';
-  // Permanent users first — no remove button
   PERMANENT_USERS.forEach(u => {
     const row = document.createElement('div');
     row.className = 'admin-user-row';
@@ -1665,7 +1578,6 @@ document.getElementById('gateUsernameInput').addEventListener('keydown', e => { 
 document.getElementById('adminPasswordInput').addEventListener('keydown', e => { if(e.key === 'Enter') attemptAdminLogin(); });
 document.getElementById('adminNewUserInput').addEventListener('keydown', e => { if(e.key === 'Enter') addAdminUser(); });
 
-// Load the allowed-username list before the gate is usable
 loadAllowedUsers();
 renderAdminUserList();
 </script>
